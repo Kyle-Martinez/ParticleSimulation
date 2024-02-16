@@ -25,12 +25,12 @@ public class SimulationPanel extends JPanel{
             while (true) {
                 updateSimulation();
                 frameCount++;
-                if (System.nanoTime() > lastFPSCheck + 1000000000){
-                    //System.out.println("FPS: " + frameCount);
-                    ParticleSimulation.fpsLabel.setText("FPS: " + frameCount);
-                    frameCount = 0;
-                    lastFPSCheck = System.nanoTime();
-                }
+                // if (System.nanoTime() > lastFPSCheck + 1000000000){
+                //     //System.out.println("FPS: " + frameCount);
+                //     ParticleSimulation.fpsLabel.setText("FPS: " + frameCount);
+                //     frameCount = 0;
+                //     lastFPSCheck = System.nanoTime();
+                // }
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {

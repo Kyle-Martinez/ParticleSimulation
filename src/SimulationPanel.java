@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -18,6 +20,7 @@ public class SimulationPanel extends JPanel{
     private final int THREAD_COUNT = 8;
     private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
     public static int frameCount = 0;
+    public int previousFPS = 0;
     public long lastFPSCheck = 0;
 
     public SimulationPanel(){
@@ -27,12 +30,6 @@ public class SimulationPanel extends JPanel{
             while (true) {
                 updateSimulation();
                 frameCount++;
-                if (System.nanoTime() > lastFPSCheck + 1000000000){
-                    //System.out.println("FPS: " + frameCount);
-                    ParticleSimulation.fpsLabel.setText("FPS: " + frameCount);
-                    frameCount = 0;
-                    lastFPSCheck = System.nanoTime();
-                }
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -77,6 +74,23 @@ public class SimulationPanel extends JPanel{
         wall.setBounds(0,0, 1280,720);
         this.add(wall);
         repaint();
+    }
+
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 12));
+        //g.drawString("FPS: " + 0, 10, 20);
+        if (System.nanoTime() > lastFPSCheck + 1000000000){
+            g.drawString("FPS: " + frameCount, 10, 20);
+            previousFPS = frameCount;
+            frameCount = 0;
+            lastFPSCheck = System.nanoTime();
+        }
+        else{
+            g.drawString("FPS: " + previousFPS, 10, 20);
+        }
     }
 
     public void updateSimulation(){
